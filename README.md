@@ -43,16 +43,26 @@ LinxuCopy
 
 cd lede 或者 cd openwrt
 git pull 同步更新源码
+
 ./scripts/feeds update -a && ./scripts/feeds install -a
+
 rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
+
 make menuconfig
+
 make -j1 V=s n=线程数+1，例如4线程的I5填-j5，开始编译
+
 LinuxCopy
+
 如果编译出了问题，还可以执行命令 make clean 来清除之前编译所产生的 object 文件（后缀为“.o”的文件）及可执行文件，再来一遍。
 
+
 编译完成后固件输出在 /lede/bin/targets 目录下，按 CPU 排列。可以用 everything 软件直接搜索 lede 或 openwrt，找 C 盘 Ubuntu 文件夹下，即可看到编译生成的固件。
+
 如果编译失败，绝大多数情况是网络引起的，文件下载不完整，或者有的链接需要翻墙什么的，编译环境和步骤不错的话多试几次就好了。
+
 选项简要说明
+
 进入 menuconfig 第一眼感觉好复杂，不是专业的根本不知道都是啥，不过我们编译自己的固件不需要知道那么多，大多数默认设置就好了。
 
 Target System (x86) ---> #设置CPU类型（软路由所以选择x86,硬路由根据型号厂家选择自己的cpu)
