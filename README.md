@@ -77,45 +77,81 @@ LinuxCopy
 进入 menuconfig 第一眼感觉好复杂，不是专业的根本不知道都是啥，不过我们编译自己的固件不需要知道那么多，大多数默认设置就好了。
 
 Target System (x86) ---> #设置CPU类型（软路由所以选择x86,硬路由根据型号厂家选择自己的cpu)
+
 Subtarget (x86_64) ---> #CPU子选项
+
 Target Profile (Generic) ---> #厂家具体型号
+
 Target Images ---> #设置编译的格式（squashfs，ext4）
+
 Global build settings ---> #全局设置
+
 [ ] Advanced configuration options (for developers) ---- #高级配置选项
+
 [ ] Build the OpenWrt Image Builder #创建OpenWrt镜像生成器
+
 [ ] Build the OpenWrt SDK #创建OpenWrt SDK
+
 [ ] Package the OpenWrt-based Toolchain #打包基于OpenWrt的工具链
+
 [ ] Image configuration ---> #镜像配置
+
 Base system ---> #设置基础系统
+
 Administration ---> #管理
+
 Boot Loaders ---> #设置启动加载器
+
 Development --->
+
 Extra packages ---> #设置额外软件包
+
 Firmware ---> #设置固件
+
 Fonts --->　#设置字体
+
 Kernel modules ---> #设置一些接口模块，如LED，i2c，spi等
+
 Languages ---> #设置语言，如go，lua，node.js，php，Python等等
+
 Libraries ---> #设置库
+
 LuCI ---> #LuCi设置（这里重点开始选择- 3. Applications ->进去编译选择“y”，取消选“n”,说明在下边链接 ）
 
 1. collections luCI HTTPS支持 
+
 2. modules 模块，选中 Minify Lua Sources 压缩 Lua 脚本可增大固件中的可用空间
+
 3. applications 应用
+
 4. themes 主题
+
 5. protocols 支持协议
+
 6. libraries 支持docker json等库
+
 9. freifunk 社区产品
+
 Mail ---> mail 相关软件，协议等
+
 Multimedia ---> #设置多媒体，如FFmpeg
+
 Network ---> #网络配置，如bittorrent，firewall，download manager，VPN，ssh等等
+
 Sound ---> #声音配置
+
 Utilities ---> #设置实用程序
+
 Xorg ---> #字体配置
 
 拿 EA6500 v2 路由来做例子：
+
 Target System --> Broadcom BCM47xx/53xx(ARM)
+
 Target Profile --> Multiple devices
+
 Target Devices --> Linksys EA6500 V2
+
 Target Images --> squashfs
 
 
@@ -128,6 +164,7 @@ LuCI --> 3. Applications --> 选择需要的插件，根据路由器的 flash �
  
 插件列表及简要说明见这里：
 Openwrt 编译 LuCI 插件说明-EA6500v2-Lienol.xlsx 提取码: jr6r
+
 Openwrt 编译 LuCI 插件说明-EA6500v2-lean.xlsx 提取码: ic8t
 
 说一下，选择插件不用一股脑儿全选了，根据自己的需要选，很多硬路由都有空间限制，比如这个 EA6500 v2，我开始编译的固件有 35MB，通过 dd-wrt 过渡固件升级不行，miniweb 上传不行，tftp 也不行。就开始怀疑编译的固件有问题，我用了默认选择的插件编译出来只有 10MB，一刷就启动了。后来搜索到是因为 linksys 有分区限制，大约超过 34MB 就不行了。比如 qBittorrent，ssr-plus 体积都挺大的。
