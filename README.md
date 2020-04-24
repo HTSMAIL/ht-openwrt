@@ -12,27 +12,37 @@ sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git
 
 编译开始
 git clone https://github.com/coolsnowwolf/lede #lede源，个人不喜欢
+
 项目开源地址：
-https://github.com/Lienol/openwrt
-https://github.com/coolsnowwolf/lede
+git clone https://github.com/Lienol/openwrt
+
+git clone https://github.com/coolsnowwolf/lede
+
 两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的，具体可以看我后面的插件列表
 
 ./scripts/feeds update -a #更新
+
 ./scripts/feeds install -a #安装更新
+
 make menuconfig #配置文件
 
 make V=s
+
 先编译 Linksys EA6500v2 固件吧。
 
 运行 Ubuntu 子系统，进入 lede 文件夹，feed 更新加安装：
 
 cd lede 或者 cd openwrt
+
 ./scripts/feeds update -a 
+
 ./scripts/feeds install -a 
+
 LinuxCopy
 选择编译项目：
 
 make menuconfig
+
 LinxuCopy
 上下键选择项目，左右键选择退出保存等。
 输入 Y 选择该项目加入固件，N 不选泽，M 编译但不合入固件。
@@ -42,6 +52,7 @@ LinxuCopy
 如果需要再次编译：
 
 cd lede 或者 cd openwrt
+
 git pull 同步更新源码
 
 ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -134,20 +145,35 @@ LinuxCopy
 然后输入命令：
 
 ./scripts/feeds clean
+
 ./scripts/feeds update -a
+
 rm -rf feeds/lienol/lienol/ipt2socks
+
 rm -rf feeds/lienol/lienol/shadowsocksr-libev
+
 rm -rf feeds/lienol/lienol/pdnsd-alt
+
 rm -rf feeds/lienol/package/verysync
+
 rm -rf feeds/lienol/lienol/luci-app-verysync
+
 rm -rf package/lean/kcptun
+
 rm -rf package/lean/trojan
+
 rm -rf package/lean/v2ray
+
 rm -rf package/lean/luci-app-kodexplorer
+
 rm -rf package/lean/luci-app-pppoe-relay
+
 rm -rf package/lean/luci-app-pptp-server
+
 rm -rf package/lean/luci-app-v2ray-server
+
 ./scripts/feeds install -a
+
 LinuxCopy
 因为包重复冲突所以要删除才行，然后再 make menuconfig。
 
