@@ -2,7 +2,7 @@
 自己编译给自己用的（内容来自他人博客）
 
 编译方法
-
+make V=99 -j 96（核心数）一键起飞
 
 升级Ubuntu系统
 sudo apt-get update
