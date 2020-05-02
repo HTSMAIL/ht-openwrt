@@ -4,6 +4,24 @@
 编译方法
 make V=99 -j 96（核心数）一键起飞
 
+添加passwell插件 
+luci-app-passwall停止开发，当然如果存在BUG，欢迎各位大佬PR。
+
+vi feeds.conf.default
+
+使用方法： 编辑OpenWRT源码根目录 feeds.conf.default 将https://github.com/Lienol/openwrt-package 替换为 https://github.com/HTSMAIL/Lienol-openwrt-packages-backup
+然后执行
+
+./scripts/feeds clean
+
+./scripts/feeds update -a
+
+./scripts/feeds install -a
+
+或者你可以把该源码手动下载或Git Clone下载放到OpenWRT源码的Package目录里面，然后编译。 如果你使用的是Luci19，请编译时选上"luci","luci-compat","luci-lib-ipkg"后编译
+
+这里才是正式开始》》》》
+
 升级Ubuntu系统
 sudo apt-get update
 
@@ -18,30 +36,22 @@ git clone https://github.com/Lienol/openwrt
 
 git clone https://github.com/coolsnowwolf/lede
 
-两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的，具体可以看我后面的插件列表
+两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的
+
+cd lede 或者 cd openwrt
 
 ./scripts/feeds update -a #更新
 
 ./scripts/feeds install -a #安装更新
 
+rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
+
 make menuconfig #配置文件
 
 make V=s
 
-先编译 Linksys EA6500v2 固件吧。
+make -j1 V=s n=线程数+1，例如4线程的I5填-j5，开始编译
 
-运行 Ubuntu 子系统，进入 lede 文件夹，feed 更新加安装：
-
-cd lede 或者 cd openwrt
-
-./scripts/feeds update -a 
-
-./scripts/feeds install -a 
-
-LinuxCopy
-选择编译项目：
-
-make menuconfig
 
 LinxuCopy
 上下键选择项目，左右键选择退出保存等。
@@ -50,20 +60,6 @@ LinxuCopy
 
 最后输入 make -j1 V=s （-jn 后面的 n 是线程数。第一次编译推荐用单线程，国内请尽量全局科学上网或者国内白名单）即可开始编译，也可以直接 make V=s 编译。第一次时间比较久，我的台式机要三四个小时，比编译 Android 固件快一些，如果后面只修改选择插件，再次编译可能只要十几二十分钟。
 如果需要再次编译：
-
-cd lede 或者 cd openwrt
-
-git pull 同步更新源码
-
-./scripts/feeds update -a && ./scripts/feeds install -a
-
-rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
-
-make menuconfig
-
-make -j1 V=s n=线程数+1，例如4线程的I5填-j5，开始编译
-
-LinuxCopy
 
 如果编译出了问题，还可以执行命令 make clean 来清除之前编译所产生的 object 文件（后缀为“.o”的文件）及可执行文件，再来一遍。
 
@@ -218,7 +214,3 @@ LinuxCopy
 硬路由一般刷机有三种方式：在原始固件里直接升级新固件；复位键 30s 后进入 uboot web 界面上传固件；复位后用 tftp 软件发固件。如果路由器直接启动不了了就得电脑连接路由器的串口，通过串口命令，用 tftp 软件发送固件。
 无论哪种办法，最好在刷机的时候打开命令窗口持续观测路由 ping 192.168.1.1 -t，TTL=64 是正常连接的状态，TTL=100 时可以访问 boot web 界面上传或者用 tftp 发送固件。有时候 tftp 客户端会发送失败，那就换一个吧，我觉得 tftpd64 下载 这个发送效果不错。
 还有一点要注意，操作系统里的 IP 地址设置，要和路由器在同一个 IP 段，包括子网掩码都得手动填好，不要自动获取。有的固件默认 IP 并不是 192.168.1.1，要先确定好，别设错了 ping 半天都不对。
-
-固件
-整个编译过程还是比较简单的，就是耗点时间，我把最后编译的固件刷到了 Linksys EA6500v2，比较遗憾，WiFi 体验很差，只支持 802.11bg，没有 5G。当然，这个不是这个源或编译的问题，我试过 openwrt 官方固件也是一样。
-如果当有线路由还可以，科学上网比较稳，速度也快。
