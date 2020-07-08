@@ -2,23 +2,19 @@
 关于虚拟机如何运行
 https://blog.csdn.net/ballack_linux/article/details/81331527
 
-编译方法
-
-   make V=99 -j 96（核心数）#一键起飞
+      编译方法
+      make V=99 -j 96  #一键起飞
 
 
 
 
 详细说明篇章：这里才是正式开始》》》》
 
-升级Ubuntu系统
-sudo apt-get update
+      1.升级Ubuntu系统
+      sudo apt-get update
 
-安装依赖
-sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
-
-编译开始克隆源码
-git clone https://github.com/coolsnowwolf/lede #lede源
+     2. 安装依赖
+      sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
 
 项目开源地址：
 git clone https://github.com/Lienol/openwrt
@@ -26,8 +22,13 @@ git clone https://github.com/Lienol/openwrt
 git clone https://github.com/coolsnowwolf/lede
 
 两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的
+     
+     3.编译开始克隆源码
+      git clone https://github.com/coolsnowwolf/lede #lede源
 
-cd lede 或者 cd openwrt
+
+
+      4.cd lede 或者 cd openwrt
 
 添加passwell插件 
 luci-app-passwall停止开发，当然如果存在BUG，欢迎各位大佬PR。
@@ -35,45 +36,39 @@ luci-app-passwall停止开发，当然如果存在BUG，欢迎各位大佬PR。
 vi feeds.conf.default
 
 使用方法： 编辑OpenWRT源码根目录 feeds.conf.default 将https://github.com/Lienol/openwrt-package 替换为 https://github.com/HTSMAIL/Lienol-openwrt-packages-backup
-然后执行
+然后执行或者你可以把该源码手动下载或Git Clone下载放到OpenWRT源码的Package目录里面，然后编译。 如果你使用的是Luci19，请编译时选上"luci","luci-compat","luci-lib-ipkg"后编译
+       
+       5.安装更新清理配置
+      ./scripts/feeds clean
 
-./scripts/feeds clean
+      ./scripts/feeds update -a  #更新 
 
-./scripts/feeds update -a
+      ./scripts/feeds install -a #安装更新
 
-./scripts/feeds install -a
+      rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
 
-或者你可以把该源码手动下载或Git Clone下载放到OpenWRT源码的Package目录里面，然后编译。 如果你使用的是Luci19，请编译时选上"luci","luci-compat","luci-lib-ipkg"后编译
-
- #更新 
-./scripts/feeds update -a 
-
-./scripts/feeds install -a #安装更新
-
-rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
 
 SSR P+添加
 
 使用方法
-
-    #源码根目录，编辑.gitignore文件
+#源码根目录，编辑.gitignore文件
     vi .gitignore
     
-    #在文件最后一行，加入
+ #在文件最后一行，加入
     git rm --cached package/lean/luci-app-ssr-plus/ -r
-    
-    #保存后，进入lean源码目录
+
+#保存后，进入lean源码目录
     cd package/lean/
     
-    #下载源码
+ #下载源码
     git clone https://gitee.com/xiugan/luci-app-ssr-plus.git
     
-    #回到源码根目录
+#回到源码根目录
     cd ../..
     
-    #拉取源码
+#拉取源码
     git pull
-    make menuconfig #配置文件
+    6.make menuconfig #配置文件
 
     make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
 
