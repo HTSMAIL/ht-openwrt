@@ -1,45 +1,32 @@
 # ht-openwrt编译方法说明
+关于虚拟机如何运行
+https://blog.csdn.net/ballack_linux/article/details/81331527
 
 编译方法
 make V=99 -j 96（核心数）一键起飞
 
-SSR P添加
-使用方法一
-    #源码根目录，进入package文件夹
-    
-    cd package/     #创建一个openwrt-packages
-    
-    mkdir openwrt-packages  #进入新建的文件夹
-    
-    cd openwrt-packages   #下载源码
-    
-    git clone https://gitee.com/xiugan/luci-app-ssr-plus.git  #回到源码根目录
-   
-   cd ../..  
-   
-   #拉取源码
-    git pull
-使用方法二
-    #源码根目录，编辑.gitignore文件
-    
-    vi .gitignore
-    #在文件最后一行，加入
-   
-    git rm --cached package/lean/luci-app-ssr-plus/ -r
-    
-    #保存后，进入lean源码目录
-    cd package/lean/
-    
-    #下载源码
-    git clone https://gitee.com/xiugan/luci-app-ssr-plus.git
-    
-    #回到源码根目录
-    cd ../..
-    
-    #拉取源码
-    git pull
-注意
-以上两种方法只能选其中一种， 采用任一方法后，ssr就不受git pull影响了。
+
+
+
+详细说明篇章：这里才是正式开始》》》》
+
+升级Ubuntu系统
+sudo apt-get update
+
+安装依赖
+sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
+
+编译开始克隆源码
+git clone https://github.com/coolsnowwolf/lede #lede源
+
+项目开源地址：
+git clone https://github.com/Lienol/openwrt
+
+git clone https://github.com/coolsnowwolf/lede
+
+两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的
+
+cd lede 或者 cd openwrt
 
 添加passwell插件 
 luci-app-passwall停止开发，当然如果存在BUG，欢迎各位大佬PR。
@@ -57,25 +44,6 @@ vi feeds.conf.default
 
 或者你可以把该源码手动下载或Git Clone下载放到OpenWRT源码的Package目录里面，然后编译。 如果你使用的是Luci19，请编译时选上"luci","luci-compat","luci-lib-ipkg"后编译
 
-这里才是正式开始》》》》
-
-升级Ubuntu系统
-sudo apt-get update
-
-安装依赖
-sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
-
-编译开始
-git clone https://github.com/coolsnowwolf/lede #lede源
-
-项目开源地址：
-git clone https://github.com/Lienol/openwrt
-
-git clone https://github.com/coolsnowwolf/lede
-
-两者主要区别在于 Lienol 带 passwall 插件，lean 带 ssr-plus，LuCI 里的插件两者大部分是一样的
-
-cd lede 或者 cd openwrt
 
 ./scripts/feeds update -a #更新
 
@@ -83,14 +51,34 @@ cd lede 或者 cd openwrt
 
 rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
 
+SSR P+添加
+
+使用方法#源码根目录，编辑.gitignore文件
+    
+    vi .gitignore
+    #在文件最后一行，加入
+   
+    git rm --cached package/lean/luci-app-ssr-plus/ -r
+    
+    #保存后，进入lean源码目录
+    cd package/lean/
+    
+    #下载源码
+    git clone https://gitee.com/xiugan/luci-app-ssr-plus.git
+    
+    #回到源码根目录
+    cd ../..
+    
+    #拉取源码
+    git pull
 make menuconfig #配置文件
 
-make V=s
+make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
 
-make -j1 V=s n=线程数+1，例如4线程的I5填-j5，开始编译
+输入 make -j1 V=s （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
 
+或者make V=s
 
-LinxuCopy
 上下键选择项目，左右键选择退出保存等。
 输入 Y 选择该项目加入固件，N 不选泽，M 编译但不合入固件。
 所有项目选完后保存再退出。保存时可以重命名，但只起保存当前配置的作用，编译有效的配置文件名还是 .config。
