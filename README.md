@@ -3,7 +3,7 @@
 https://blog.csdn.net/ballack_linux/article/details/81331527
 
 编译方法
-make V=99 -j 96（核心数）一键起飞
+   make V=99 -j 96（核心数）一键起飞
 
 
 
