@@ -65,6 +65,7 @@ SSR P+添加
     
 #拉取源码
     git pull
+    
     6.make menuconfig #配置文件
 
     make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
