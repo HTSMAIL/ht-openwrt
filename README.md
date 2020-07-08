@@ -1,5 +1,4 @@
-# ht-openwrt
-自己编译给自己用的（部分内容来自他人博客）
+# ht-openwrt编译方法说明
 
 编译方法
 make V=99 -j 96（核心数）一键起飞
@@ -67,7 +66,7 @@ sudo apt-get update
 sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
 
 编译开始
-git clone https://github.com/coolsnowwolf/lede #lede源，个人不喜欢
+git clone https://github.com/coolsnowwolf/lede #lede源
 
 项目开源地址：
 git clone https://github.com/Lienol/openwrt
@@ -191,64 +190,3 @@ Target Images --> squashfs
 
 LuCI --> 3. Applications --> 选择需要的插件，根据路由器的 flash 大小
 --> 4. Themes --> 默认就好，有的主题体积会比较大
-
-
-
-
- 
-插件列表及简要说明见这里：
-Openwrt 编译 LuCI 插件说明-EA6500v2-Lienol.xlsx 提取码: jr6r
-
-Openwrt 编译 LuCI 插件说明-EA6500v2-lean.xlsx 提取码: ic8t
-
-说一下，选择插件不用一股脑儿全选了，根据自己的需要选，很多硬路由都有空间限制，比如这个 EA6500 v2，我开始编译的固件有 35MB，通过 dd-wrt 过渡固件升级不行，miniweb 上传不行，tftp 也不行。就开始怀疑编译的固件有问题，我用了默认选择的插件编译出来只有 10MB，一刷就启动了。后来搜索到是因为 linksys 有分区限制，大约超过 34MB 就不行了。比如 qBittorrent，ssr-plus 体积都挺大的。
-这种情况下 LuCI 插件就不用 Y 选，用 M。编译但不合入固件，刷好小体积固件后再到路由器去上传安装编译好的 ipk 插件。
-
-添加 Passwall 插件
-Lienol 源的 Passwall 的插件，这个功能和 lean 源的 ssr-plus 插件差不多，支持多个 SS,SSR,V2 或 Trojan 节点，同时具有分流，故障转移，自动恢复，自带 HaProxy 负载均衡。比较而言我更喜欢这个插件。
-
-在 lean 源添加 Passwall 插件编译的方法：
-
-cd lede
-vi feeds.conf.default
-LinuxCopy
-编辑 feeds.conf.default 文件，在末尾加上一行：src-git lienol https://github.com/Lienol/openwrt-package。当然，在 win10 下可以直接搜索该文档进行编辑。
-然后输入命令：
-
-./scripts/feeds clean
-
-./scripts/feeds update -a
-
-rm -rf feeds/lienol/lienol/ipt2socks
-
-rm -rf feeds/lienol/lienol/shadowsocksr-libev
-
-rm -rf feeds/lienol/lienol/pdnsd-alt
-
-rm -rf feeds/lienol/package/verysync
-
-rm -rf feeds/lienol/lienol/luci-app-verysync
-
-rm -rf package/lean/kcptun
-
-rm -rf package/lean/trojan
-
-rm -rf package/lean/v2ray
-
-rm -rf package/lean/luci-app-kodexplorer
-
-rm -rf package/lean/luci-app-pppoe-relay
-
-rm -rf package/lean/luci-app-pptp-server
-
-rm -rf package/lean/luci-app-v2ray-server
-
-./scripts/feeds install -a
-
-LinuxCopy
-因为包重复冲突所以要删除才行，然后再 make menuconfig。
-
-刷机
-硬路由一般刷机有三种方式：在原始固件里直接升级新固件；复位键 30s 后进入 uboot web 界面上传固件；复位后用 tftp 软件发固件。如果路由器直接启动不了了就得电脑连接路由器的串口，通过串口命令，用 tftp 软件发送固件。
-无论哪种办法，最好在刷机的时候打开命令窗口持续观测路由 ping 192.168.1.1 -t，TTL=64 是正常连接的状态，TTL=100 时可以访问 boot web 界面上传或者用 tftp 发送固件。有时候 tftp 客户端会发送失败，那就换一个吧，我觉得 tftpd64 下载 这个发送效果不错。
-还有一点要注意，操作系统里的 IP 地址设置，要和路由器在同一个 IP 段，包括子网掩码都得手动填好，不要自动获取。有的固件默认 IP 并不是 192.168.1.1，要先确定好，别设错了 ping 半天都不对。
