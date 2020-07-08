@@ -5,10 +5,7 @@ https://blog.csdn.net/ballack_linux/article/details/81331527
       编译方法
       make V=99 -j 96  #一键起飞
 
-
-
-
-详细说明篇章：这里才是正式开始》》》》
+二、详细说明篇章：这里才是正式开始》》》》
 
       1.升级Ubuntu系统
       sudo apt-get update
