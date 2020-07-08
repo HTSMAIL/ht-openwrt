@@ -44,8 +44,8 @@ vi feeds.conf.default
 
 或者你可以把该源码手动下载或Git Clone下载放到OpenWRT源码的Package目录里面，然后编译。 如果你使用的是Luci19，请编译时选上"luci","luci-compat","luci-lib-ipkg"后编译
 
-
-./scripts/feeds update -a #更新
+ #更新 
+./scripts/feeds update -a 
 
 ./scripts/feeds install -a #安装更新
 
@@ -53,11 +53,12 @@ rm -rf ./tmp && rm -rf .config 清除编译配置和缓存
 
 SSR P+添加
 
-使用方法#源码根目录，编辑.gitignore文件
-    
+使用方法
+
+    #源码根目录，编辑.gitignore文件
     vi .gitignore
+    
     #在文件最后一行，加入
-   
     git rm --cached package/lean/luci-app-ssr-plus/ -r
     
     #保存后，进入lean源码目录
@@ -71,13 +72,13 @@ SSR P+添加
     
     #拉取源码
     git pull
-make menuconfig #配置文件
+    make menuconfig #配置文件
 
-make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
+    make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
 
-输入 make -j1 V=s （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
+    输入 make -j1 V=s （-j1 后面是线程数。第一次编译推荐用单线程）即可开始编译你要的固件了。
 
-或者make V=s
+    或者make V=s
 
 上下键选择项目，左右键选择退出保存等。
 输入 Y 选择该项目加入固件，N 不选泽，M 编译但不合入固件。
@@ -97,84 +98,84 @@ make -j8 download V=s 下载dl库（国内请尽量全局科学上网）
 
 进入 menuconfig 第一眼感觉好复杂，不是专业的根本不知道都是啥，不过我们编译自己的固件不需要知道那么多，大多数默认设置就好了。
 
-Target System (x86) ---> #设置CPU类型（软路由所以选择x86,硬路由根据型号厂家选择自己的cpu)
+    Target System (x86) ---> #设置CPU类型（软路由所以选择x86,硬路由根据型号厂家选择自己的cpu)
 
-Subtarget (x86_64) ---> #CPU子选项
+    Subtarget (x86_64) ---> #CPU子选项
 
-Target Profile (Generic) ---> #厂家具体型号
+    Target Profile (Generic) ---> #厂家具体型号
 
-Target Images ---> #设置编译的格式（squashfs，ext4）
+    Target Images ---> #设置编译的格式（squashfs，ext4）
 
-Global build settings ---> #全局设置
+    Global build settings ---> #全局设置
 
-[ ] Advanced configuration options (for developers) ---- #高级配置选项
+    [ ] Advanced configuration options (for developers) ---- #高级配置选项
 
-[ ] Build the OpenWrt Image Builder #创建OpenWrt镜像生成器
+    [ ] Build the OpenWrt Image Builder #创建OpenWrt镜像生成器
 
-[ ] Build the OpenWrt SDK #创建OpenWrt SDK
+    [ ] Build the OpenWrt SDK #创建OpenWrt SDK
 
-[ ] Package the OpenWrt-based Toolchain #打包基于OpenWrt的工具链
+    [ ] Package the OpenWrt-based Toolchain #打包基于OpenWrt的工具链
 
-[ ] Image configuration ---> #镜像配置
+    [ ] Image configuration ---> #镜像配置
 
-Base system ---> #设置基础系统
+    Base system ---> #设置基础系统
 
-Administration ---> #管理
+    Administration ---> #管理
 
-Boot Loaders ---> #设置启动加载器
+    Boot Loaders ---> #设置启动加载器
 
-Development --->
+    Development --->
 
-Extra packages ---> #设置额外软件包
+    Extra packages ---> #设置额外软件包
 
-Firmware ---> #设置固件
+    Firmware ---> #设置固件
 
-Fonts --->　#设置字体
+    Fonts --->　#设置字体
 
-Kernel modules ---> #设置一些接口模块，如LED，i2c，spi等
+    Kernel modules ---> #设置一些接口模块，如LED，i2c，spi等
 
-Languages ---> #设置语言，如go，lua，node.js，php，Python等等
+    Languages ---> #设置语言，如go，lua，node.js，php，Python等等
 
-Libraries ---> #设置库
+    Libraries ---> #设置库
 
-LuCI ---> #LuCi设置（这里重点开始选择- 3. Applications ->进去编译选择“y”，取消选“n”,说明在下边链接 ）
+    LuCI ---> #LuCi设置（这里重点开始选择- 3. Applications ->进去编译选择“y”，取消选“n”,说明在下边链接 ）
 
-1. collections luCI HTTPS支持 
+        1. collections luCI HTTPS支持 
 
-2. modules 模块，选中 Minify Lua Sources 压缩 Lua 脚本可增大固件中的可用空间
+        2. modules 模块，选中 Minify Lua Sources 压缩 Lua 脚本可增大固件中的可用空间
 
-3. applications 应用
+        3. applications 应用
 
-4. themes 主题
+        4. themes 主题
 
-5. protocols 支持协议
+        5. protocols 支持协议
 
-6. libraries 支持docker json等库
+        6. libraries 支持docker json等库
 
-9. freifunk 社区产品
+        9. freifunk 社区产品
 
-Mail ---> mail 相关软件，协议等
+    Mail ---> mail 相关软件，协议等
 
-Multimedia ---> #设置多媒体，如FFmpeg
+    Multimedia ---> #设置多媒体，如FFmpeg
 
-Network ---> #网络配置，如bittorrent，firewall，download manager，VPN，ssh等等
+    Network ---> #网络配置，如bittorrent，firewall，download manager，VPN，ssh等等
 
-Sound ---> #声音配置
+    Sound ---> #声音配置
 
-Utilities ---> #设置实用程序
+    Utilities ---> #设置实用程序
 
-Xorg ---> #字体配置
+    Xorg ---> #字体配置
 
-拿 EA6500 v2 路由来做例子：
+  拿 EA6500 v2 路由来做例子：
 
-Target System --> Broadcom BCM47xx/53xx(ARM)
+    Target System --> Broadcom BCM47xx/53xx(ARM)
 
-Target Profile --> Multiple devices
+    Target Profile --> Multiple devices
 
-Target Devices --> Linksys EA6500 V2
+    Target Devices --> Linksys EA6500 V2
 
-Target Images --> squashfs
+    Target Images --> squashfs
 
 
-LuCI --> 3. Applications --> 选择需要的插件，根据路由器的 flash 大小
---> 4. Themes --> 默认就好，有的主题体积会比较大
+    LuCI --> 3. Applications --> 选择需要的插件，根据路由器的 flash 大小
+    --> 4. Themes --> 默认就好，有的主题体积会比较大
